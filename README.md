@@ -71,9 +71,10 @@ In ```helloworld-ios-app/HomeViewController.HomeViewController.swift``` the FH.i
     FH.cloud("hello", method: HTTPMethod.POST,
         args: args, headers: nil,
         completionHandler: {(resp: Response, error: NSError?) -> Void in
-        if let _ = error {
-            print("initialize fail, \(resp.rawResponseAsString)")
-            self.button.hidden = true
+        if let error = error {
+            print("Cloud Call Failed, \(error)")
+            self.result.text = "Error during Cloud call: \(error.userInfo[NSLocalizedDescriptionKey]!)"
+            return
         }
         if let parsedRes = resp.parsedResponse as? [String:String] {
             self.result.text = parsedRes["msg"]
